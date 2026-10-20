@@ -136,7 +136,7 @@ def test_benchmark_and_report(manifest, tmp_path):
     assert result["dataset"]["image_sha256"]["2"]
     assert result["dataset"]["manifest_sha256"]
     assert result["predictions"][0]["version"] == "test"
-    assert json.loads((tmp_path / "reports/benchmark.json").read_text())["schema_version"] == 1
+    assert json.loads((tmp_path / "reports/benchmark.json").read_text())["schema_version"] == 2
     assert "| raw |" in (tmp_path / "reports/benchmark.md").read_text()
     assert compare(tmp_path / "reports", tmp_path / "comparison.md") == 1
     assert (tmp_path / "comparison.csv").exists()
@@ -235,3 +235,25 @@ def test_tesseract_uses_only_validated_frame(tmp_path, monkeypatch, fail):
         result = engine.recognize(image)
         assert result["text"] == "fixture text" and result["elapsed_seconds"] > 0
     assert prepared_paths and not prepared_paths[0].exists()
+
+
+def test_tesseract_identity_binds_language_pack_bytes(tmp_path, monkeypatch):
+    from indic_ocr_research.documents import source_id
+
+    pack = tmp_path / "eng.traineddata"
+    pack.write_bytes(b"unit-fixture-weights")
+    monkeypatch.setattr("shutil.which", lambda _: "tesseract")
+    monkeypatch.setattr(
+        Tesseract,
+        "_run",
+        lambda self, args: (
+            f'List of available languages in "{tmp_path}" (1):\neng\n'
+            if args == ["--list-langs"]
+            else "tesseract unit-fixture"
+        ),
+    )
+    engine = Tesseract()
+    first = engine.identity()
+    assert first["traineddata_sha256"]["eng"] == source_id(pack)
+    pack.write_bytes(b"changed-unit-fixture-weights")
+    assert engine.identity()["traineddata_sha256"] != first["traineddata_sha256"]

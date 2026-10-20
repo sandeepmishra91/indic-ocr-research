@@ -6,7 +6,7 @@ Each nonblank JSONL line is an object with string fields:
 {"sample_id":"doc01-line01","image_path":"lines/01.png","transcription":"नमस्ते","language":"hin","script":"Devanagari","document_id":"doc01","split":"train","source_url":"","license":"your documented permission","annotation_method":"human-double-reviewed","task":"line"}
 ```
 
-This is a schema example, not a shipped label or actual document. `task` is `line`
+This is a schema example, not a shipped label or actual document. `task` is `line`, `block`
 or `page`; `split` is `train`, `validation` or `test`. All keys are required;
 only transcription and source_url may be empty. Use a private source_url only in
 private manifests. Blank transcription is valid for negative examples, but warn
@@ -27,5 +27,6 @@ must accurately group these. NFC normalization defaults on during ingestion, is
 configurable in validation, and is mandatory for the CRNN vocabulary. Original
 benchmark labels are retained for raw metrics. Manifest splitting is deterministic
 by seed and document, but not stratified by language. Always inspect small splits.
-No automatic dataset downloading is implemented. Raw documents and checkpoints
+Optional Hugging Face imports require explicit licensed, pinned recipes; see
+[hugging-face.md](hugging-face.md). No general crawling or unclear-license download is implemented. Raw documents and checkpoints
 are ignored by Git. Keep private data outside the public repository when possible.

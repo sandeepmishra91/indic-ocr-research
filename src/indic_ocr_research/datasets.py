@@ -41,8 +41,8 @@ def read_manifest(path: Path, nfc: bool = True) -> list[dict]:
             raise ValueError(f"Line {number}: empty required metadata")
         if row["split"] not in {"train", "validation", "test"}:
             raise ValueError(f"Line {number}: invalid split")
-        if row["task"] not in {"line", "page"}:
-            raise ValueError(f"Line {number}: task must be line or page")
+        if row["task"] not in {"line", "block", "page"}:
+            raise ValueError(f"Line {number}: task must be line, block, or page")
         row["transcription"] = normalize(row["transcription"], nfc=nfc)
         row["image_path"] = str((path.parent / row["image_path"]).resolve())
         rows.append(row)
@@ -52,12 +52,17 @@ def read_manifest(path: Path, nfc: bool = True) -> list[dict]:
 
 
 def validate_rows(rows: list[dict]) -> dict:
-    errors, warnings = [], []
+    errors, warnings, issues = [], [], []
+
+    def issue(code: str, message: str) -> None:
+        errors.append(message)
+        issues.append({"code": code, "message": message})
+
     ids, documents, hashes = set(), defaultdict(set), defaultdict(list)
     for row in rows:
         sid = row["sample_id"]
         if sid in ids:
-            errors.append(f"Duplicate sample_id: {sid}")
+            issue("sample_id_duplicate", f"Duplicate sample_id: {sid}")
         ids.add(sid)
         documents[row["document_id"]].add(row["split"])
         try:
@@ -65,19 +70,19 @@ def validate_rows(rows: list[dict]) -> dict:
             load_image(image).close()
             hashes[source_id(image)].append(row)
         except (OSError, ValueError) as exc:
-            errors.append(f"{sid}: {exc}")
+            issue("image_unreadable", f"{sid}: {exc}")
         if not row["transcription"].strip():
             warnings.append(f"{sid}: empty transcription (valid blank target)")
     for doc, splits in documents.items():
         if len(splits) > 1:
-            errors.append(f"Document split leakage: {doc}: {sorted(splits)}")
+            issue("document_leakage", f"Document split leakage: {doc}: {sorted(splits)}")
     for samples in hashes.values():
         if len(samples) > 1:
             warnings.append(f"Duplicate image content: {[r['sample_id'] for r in samples]}")
             if len({r["transcription"] for r in samples}) > 1:
-                errors.append("Conflicting transcriptions for identical image content")
+                issue("image_conflict", "Conflicting transcriptions for identical image content")
             if len({r["split"] for r in samples}) > 1:
-                errors.append("Image content leakage across splits")
+                issue("image_leakage", "Image content leakage across splits")
     return {
         "valid": not errors,
         "samples": len(rows),
@@ -86,6 +91,7 @@ def validate_rows(rows: list[dict]) -> dict:
         "languages": dict(Counter(r["language"] for r in rows)),
         "tasks": dict(Counter(r["task"] for r in rows)),
         "errors": errors,
+        "issues": issues,
         "warnings": warnings,
     }
 

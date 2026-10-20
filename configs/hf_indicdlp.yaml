@@ -1,0 +1,20 @@
+# Reviewed public evaluation pilot. Do not use these held-out blocks for training.
+repo_id: onath/indicdlp-eval-set-22-sample
+revision: a290507d248c6fab61fcf64bbd9f7a7f3c3384f7
+license: cc-by-4.0
+license_url: https://huggingface.co/datasets/onath/indicdlp-eval-set-22-sample/blob/a290507d248c6fab61fcf64bbd9f7a7f3c3384f7/README.md
+attribution: IndicDLP public sample by onath on Hugging Face
+task: block
+annotation_method: publisher-provided-unverified
+image_column: image
+text_column: text
+id_column: image_name
+max_download_bytes: 4000000
+max_samples_per_file: 10
+files:
+  - path: data/Hindi-00000-of-00001.parquet
+    language: hin
+    script: Devanagari
+  - path: data/Malayalam-00000-of-00001.parquet
+    language: mal
+    script: Malayalam

@@ -2,7 +2,7 @@
 
 Supply real, licensed documents with human-provided labels for quality conclusions.
 Synthetic datasets are only mechanics tests and must be reported as such. Select
-one task (page or line) and one split per run. Prefer a stable corpus snapshot;
+one task (page, block or line) and one split per run. Prefer a stable corpus snapshot;
 retain manifest and image hashes with your experiment archive. Manifest SHA identifies
 labels and paths; selected per-sample image byte hashes are saved separately in each report.
 
@@ -25,8 +25,8 @@ Exact accuracy is the proportion of equal complete strings, including blank pair
 Engine inference is actually invoked once per selected sample. Latency includes
 image loading/preprocessing and execution as measured by the adapter, excluding
 engine construction/checkpoint loading. GPU synchronization occurs before returning.
-Throughput is successful samples divided by wall time of the inference loop,
-including failures. No warmup or batched throughput is claimed. Environment,
+Throughput is unique successful samples divided by cumulative measured inference-attempt
+wall time, including failed/retried attempts. Journal I/O, setup and cache replay are excluded. No warmup or batched throughput is claimed. Environment,
 versions, configuration, dataset identity, actual predictions and failures are
 retained in JSON. Markdown gives readable scores. Comparison CSV/Markdown includes
 task, dataset and normalization settings; inspect these before drawing conclusions.
@@ -37,3 +37,46 @@ but counted; inspect coverage alongside accuracy. All failures yield null accura
 not a successful zero-error score. Unselected task/split rows are counted as skipped.
 No matching labeled samples is an error. Reports may contain sensitive text and
 absolute paths; they are ignored by Git. Audit reports before sharing.
+
+## Durable resume and detailed reports
+
+Schema version 2 adds per-language raw/normalized scores, failure counts, interpolated
+p50/p90/p95 successful-inference latencies and up to 20 worst sample IDs by normalized
+CER. Inspect those images and labels before attributing errors to the model.
+
+`predictions.jsonl` is flushed and fsynced after each completed inference attempt.
+The header binds manifest SHA, selected image hashes, engine identity, split/task and
+normalization settings. `--resume` refuses any mismatch. Tesseract identity includes
+PSM, requested languages, timeout, preprocessing policy and traineddata SHA256 when
+its directory is discoverable. CRNN identity includes checkpoint SHA, preprocessing,
+device and torch version. Do not modify engine implementations without updating their
+identity/version. A custom engine needs a stable version for resume.
+
+Interrupted runs retain completed attempts. A torn final journal fragment can be
+removed; corruption elsewhere is an error. Resume keeps failures unless `--retry-failed`
+is explicitly supplied. Reports distinguish session attempts from reused records and
+retain cumulative attempt timing; replaying cached predictions cannot inflate throughput.
+Use one writer per output directory. Existing results are protected from accidental
+overwrite; new experiments require new directories. Journals and detailed reports
+contain sensitive text and are ignored alongside other outputs.
+
+Publisher-provided data imported from Hugging Face is labeled unverified. The small
+IndicDLP pilot uses block-level metrics, explicit CC-BY-4.0 attribution, source links,
+commit hashes and a nonrepresentative-sample warning. It is not a substitute for
+independently human-audited ground truth or production scan evaluation.
+
+Script diagnostics count Unicode letters/marks whose names identify Devanagari,
+Malayalam or Latin; remaining letters/marks are grouped as Other. This is a limited
+name-based heuristic, not a complete Unicode Script-property implementation or a
+language detector. Mixed-language and numeric captions can be valid. Low expected-script
+fractions and empty predictions are reported for investigation, never filtered out
+or used to remove combining marks from scoring.
+
+## Label-quality block found in the pilot
+
+The [executed pilot and post-run audit](experiments/indicdlp-pilot.md) found a malformed Malayalam
+reference containing image-analysis prose. The original scores are retained for
+traceability, but the affected aggregate must not be treated as validated OCR accuracy.
+Run `indicocr manifest audit --path data/indicdlp-pilot/manifest.jsonl --out outputs/audit.json
+--review-manifest outputs/review.jsonl --fail-on-flags` to produce a review queue.
+Flags never alter or exclude samples. No heuristic flags is also not proof of correctness.

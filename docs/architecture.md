@@ -32,3 +32,8 @@ still see border padding near line ends. Targets use blank ID zero exclusively f
 CTC; Unicode code points map to positive IDs. Repeated adjacent targets require extra
 time steps and are checked before loss. Float32 CTC runs outside AMP. Training is
 line recognition only; document segmentation is a separate future component.
+
+`hub` provides optional metadata-first, byte-budgeted, commit-pinned Parquet imports
+without executing remote code. `journal` provides durable single-writer prediction
+records and strict identity checks for interrupted evaluation. Benchmark scoring uses
+raw saved predictions; resume does not silently switch engines or dataset snapshots.

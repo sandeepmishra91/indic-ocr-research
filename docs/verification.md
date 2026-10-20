@@ -104,3 +104,29 @@ Updated local verification: 56 passed and 1 skipped with CPU torch; 52 passed an
 1 skipped without torch; Ruff passed. Hosted checks for the latest commit are linked
 from the pull request. Initial hosted CI also passed with 9 integration tests,
 including real English Tesseract OCR.
+
+## Hugging Face and benchmark follow-up
+
+A real metadata-first import of 20 publisher-labeled Hindi/Malayalam blocks succeeded,
+downloading exactly 1,674,236 shard bytes into an ignored cache. `hub inspect --offline`
+and `hub import --offline` reused it successfully. Local tests expanded to 87 passed,
+1 skipped with CPU torch and optional Hub dependencies; the skip is local Tesseract.
+
+An opt-in hosted pilot successfully executed actual Tesseract PSM 3/6 inference using
+Hindi/Malayalam plus English packs. No execution failures occurred. The unexpectedly
+high Malayalam WER prompted an additional Indic-only versus Indic-plus-English
+comparison and text-script diagnostics; see the pilot result record for measured
+outputs. Publisher labels remain unverified. These are convenience-sampled blocks,
+not a representative corpus or proof of production accuracy.
+
+The final hosted comparison completed 80 OCR attempts across eight configurations
+with zero execution failures. A subsequent label audit found one malformed Malayalam
+reference containing analysis prose. See [the result record](experiments/indicdlp-pilot.md)
+for the unchanged measurements and why its aggregate is blocked as an accuracy claim.
+New regressions cover non-destructive review queues, annotation-meta-text warnings,
+failed-inference label flags and pilot-grid recovery across never-started cases.
+
+Final minimal environment check: 82 passed, 2 skipped (Tesseract and optional PyArrow
+absent). The full local environment passed 87 with 1 Tesseract skip. The label-audit
+CLI generated exactly one flagged record and an unchanged review queue. Source images,
+labels, journals, local .env and credentials remain outside Git and shared artifacts.

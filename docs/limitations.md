@@ -1,6 +1,6 @@
 # Limitations
 
-- No licensed real-world corpus or pretrained weights are shipped. No Hindi/Malayalam
+- No licensed real-world corpus or pretrained weights are shipped. No independently human-audited or representative Hindi/Malayalam
   accuracy, 22-language support level, 90% result, ARM speedup or MI300X result exists.
 - CRNN recognizes cropped horizontal lines. No neural detection, layout analysis,
   table/form extraction, reading-order recovery, handwriting or orientation classifier.
@@ -23,3 +23,8 @@
 - Basic package install is CPU compatible; torch/renderer wheel availability depends
   on OS/architecture. GPU support is code readiness until tested on actual hardware.
 - Hosted CI and a remote PR require a configured GitHub repository and credentials.
+
+- The optional 20-block Hugging Face pilot has unverified publisher labels and source
+  document grouping. It supports diagnostics, not a representative quality estimate.
+- Benchmark journals support interruption recovery with a single writer per output
+  directory. They are not a concurrent database or distributed experiment scheduler.
