@@ -197,3 +197,41 @@ def test_cli_bad_yaml(tmp_path):
     result = CliRunner().invoke(app, ["train", "--config", str(config)])
     assert result.exit_code == 1
     assert "Error:" in result.output
+
+
+@pytest.mark.parametrize("fail", [False, True])
+def test_tesseract_uses_only_validated_frame(tmp_path, monkeypatch, fail):
+    from PIL import Image
+
+    monkeypatch.setattr("tempfile.tempdir", str(tmp_path))
+    monkeypatch.setattr("shutil.which", lambda _: "tesseract")
+    image = tmp_path / "frames.tiff"
+    Image.new("RGB", (20, 10), "white").save(
+        image, save_all=True, append_images=[Image.new("RGB", (40, 30), "black")]
+    )
+    prepared_paths = []
+
+    def invoke(self, args):
+        if args == ["--version"]:
+            return "tesseract test"
+        if args == ["--list-langs"]:
+            return "List of available languages (1):\neng\n"
+        prepared = Path(args[0])
+        prepared_paths.append(prepared)
+        with Image.open(prepared) as raster:
+            assert raster.format == "PNG" and raster.n_frames == 1
+            assert raster.size == (20, 10)
+            assert raster.getpixel((0, 0)) == (255, 255, 255)
+        if fail:
+            raise RuntimeError("test subprocess failure")
+        return "fixture text"
+
+    monkeypatch.setattr(Tesseract, "_run", invoke)
+    engine = Tesseract()
+    if fail:
+        with pytest.raises(RuntimeError, match="test subprocess failure"):
+            engine.recognize(image)
+    else:
+        result = engine.recognize(image)
+        assert result["text"] == "fixture text" and result["elapsed_seconds"] > 0
+    assert prepared_paths and not prepared_paths[0].exists()

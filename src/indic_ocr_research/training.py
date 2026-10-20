@@ -5,11 +5,11 @@ from pathlib import Path
 
 import numpy as np
 import torch
-import yaml
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
 
 from .common import device_info, provenance, write_json
+from .config import load_training_config
 from .datasets import read_manifest, validate_rows
 from .documents import source_id
 from .evaluation import metrics
@@ -40,38 +40,7 @@ class Lines(Dataset):
 
 
 def train(config_path: Path, resume: Path | None = None) -> dict:
-    try:
-        config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    except yaml.YAMLError as exc:
-        raise ValueError(f"Invalid training YAML: {exc}") from exc
-    if not isinstance(config, dict):
-        raise ValueError("Training config must be a mapping")
-    required = {"manifest", "output_dir"}
-    if required - config.keys():
-        raise ValueError(f"Missing config values: {sorted(required - config.keys())}")
-    defaults = {
-        "epochs": 1,
-        "batch_size": 4,
-        "learning_rate": 0.001,
-        "hidden": 64,
-        "height": 32,
-        "max_width": 2048,
-        "seed": 42,
-        "device": "auto",
-        "optimizer": "adam",
-        "gradient_clip": 5.0,
-        "amp": True,
-        "threads": 2,
-    }
-    unknown = config.keys() - defaults.keys() - required
-    if unknown:
-        raise ValueError(f"Unknown config keys: {sorted(unknown)}")
-    config = defaults | config
-    for key in ["epochs", "batch_size", "hidden", "height", "max_width", "threads"]:
-        if not isinstance(config[key], int) or isinstance(config[key], bool) or config[key] <= 0:
-            raise ValueError(f"{key} must be a positive integer")
-    if config["learning_rate"] <= 0 or config["gradient_clip"] <= 0:
-        raise ValueError("learning_rate and gradient_clip must be positive")
+    config = load_training_config(config_path)
     torch.set_num_threads(config["threads"])
     seed = config["seed"]
     random.seed(seed)
@@ -135,7 +104,9 @@ def train(config_path: Path, resume: Path | None = None) -> dict:
             raise ValueError("Resume vocabulary differs")
         model.load_state_dict(saved["model"])
         optimizer.load_state_dict(saved["optimizer"])
-        scaler.load_state_dict(saved["scaler"])
+        # CPU/full-precision checkpoints have no scaler state to restore.
+        if saved["scaler"]:
+            scaler.load_state_dict(saved["scaler"])
         torch.set_rng_state(saved["torch_rng"])
         generator.set_state(saved["loader_rng"])
         if device.type == "cuda" and saved.get("gpu_rng"):

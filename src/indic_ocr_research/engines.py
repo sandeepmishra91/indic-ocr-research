@@ -2,6 +2,7 @@ import shutil
 import subprocess
 import time
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from .documents import load_image
 
@@ -38,11 +39,14 @@ class Tesseract:
     def recognize(self, image: Path) -> dict:
         if not self.language:
             raise ValueError("Choose a language for recognition")
-        load_image(image).close()
         start = time.perf_counter()
-        text = self._run(
-            [str(image.resolve()), "stdout", "-l", self.language, "--psm", str(self.psm)]
-        )
+        # Pass exactly the validated, EXIF-oriented first frame to the executable.
+        # Passing the original TIFF would let Tesseract process unvalidated later frames.
+        with load_image(image) as raster, TemporaryDirectory(prefix="indicocr-") as directory:
+            prepared = Path(directory) / "input.png"
+            options = {"dpi": raster.info["dpi"]} if "dpi" in raster.info else {}
+            raster.save(prepared, **options)
+            text = self._run([str(prepared), "stdout", "-l", self.language, "--psm", str(self.psm)])
         return {
             "text": text,
             "engine": "tesseract",

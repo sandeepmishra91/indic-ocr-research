@@ -11,8 +11,8 @@ CI result is claimed by this local record.
 | Check | Result |
 |---|---|
 | Fresh virtual environment, `pip install -e ".[dev]"` | Passed, with no torch installed |
-| Fresh environment core tests | 34 passed, 1 skipped (Tesseract absent) |
-| Separate environment with CPU torch 2.7.1 | 38 passed, 1 skipped (Tesseract absent) |
+| Fresh environment core tests | 52 passed, 1 skipped (Tesseract absent) |
+| Separate environment with CPU torch 2.7.1 | 56 passed, 1 skipped (Tesseract absent) |
 | Ruff lint | Passed |
 | CLI help and doctor | Passed; correctly reported CPU and missing Tesseract |
 | PDF inspect/render CLI | Passed on a generated synthetic image PDF; 144 DPI output 400x200 |
@@ -84,3 +84,23 @@ latency on the actual host. Validate ROCm/CUDA forward/CTC/backward/AMP on actua
 compatible hardware before any acceleration claim. Milestone 4 extensions remain
 planned; see research-plan.md and limitations.md. Workflow run status is available
 on the pull request; this file records local execution only.
+
+## Pre-merge review follow-up
+
+Reviewed input handling, CTC lengths, checkpoint resume, metric normalization,
+manifest integrity and CI. Fixed Tesseract passing the original multi-frame TIFF
+after only validating its first frame: OCR now receives a temporary PNG containing
+exactly the validated, EXIF-oriented first frame, retaining source DPI when present.
+Temporary data is cleaned up on both success and subprocess failure. Timing now
+includes preparation, matching the documented latency definition.
+
+Training configuration has a separate torch-free validator for path types, dimensions,
+seed bounds, numeric finiteness, booleans and supported devices/optimizers. Invalid
+settings fail before image loading or model allocation. Full-precision checkpoints
+with empty AMP scaler state do not attempt to restore an absent scaler. CPU resume
+is tested; cross-device GPU execution still requires actual hardware validation.
+
+Updated local verification: 56 passed and 1 skipped with CPU torch; 52 passed and
+1 skipped without torch; Ruff passed. Hosted checks for the latest commit are linked
+from the pull request. Initial hosted CI also passed with 9 integration tests,
+including real English Tesseract OCR.

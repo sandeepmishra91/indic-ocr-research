@@ -23,7 +23,7 @@ features, packed bidirectional sequence modeling and greedy CTC. `training` owns
 optional torch dependencies and checkpoint state; ordinary OCR commands need no torch.
 `evaluation` accepts the same engine protocol for Tesseract or CRNN. `reporting` compares
 local experiments. `common` records runtime identity, normalization and device metadata.
-`cli` exposes all operations with meaningful nonzero exits.
+`config` validates training settings without importing torch. `cli` exposes all operations with meaningful nonzero exits.
 
 Images are resized to fixed height, retaining width; oversized lines are rejected.
 Right padding is white (normalized +1). Time length is floor(width/4), reflecting two
