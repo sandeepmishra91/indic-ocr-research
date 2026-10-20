@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+build/
+dist/
+.env
+.env.*
+.aws/
+.azure/
+*.pem
+*.key
+data/*
+!data/README.md
+outputs/
+reports/
+*.pt
+*.pth
+*.onnx
+
+# Local implementation brief
+prompt.md

@@ -1,0 +1,8 @@
+# Reference settings for CLI arguments; this file is not loaded by the CLI.
+engine: tesseract
+lang: hin+eng
+psm: 3
+split: test
+task: page
+nfc: true
+whitespace: true
