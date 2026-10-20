@@ -9,6 +9,7 @@ from .common import normalize, provenance, write_json
 from .datasets import read_manifest, validate_rows
 from .documents import source_id
 from .journal import PredictionJournal, fingerprint
+from .text_audit import audit_pair
 
 
 class Engine(Protocol):
@@ -171,6 +172,7 @@ def benchmark(
                 "wer": score["wer"],
                 "character_edits": score["character_edits"],
                 "reference_characters": score["reference_characters"],
+                **audit_pair(pair[0], pair[1], language),
             }
         )
     grouped = {
@@ -223,6 +225,21 @@ def benchmark(
         "latency_percentiles_seconds": {
             str(p): float(np.percentile(latencies, p)) if latencies else None for p in (50, 90, 95)
         },
+        "diagnostics": {
+            "empty_predictions": sum(s["empty_prediction"] for s in sample_errors),
+            "empty_references": sum(s["empty_reference"] for s in sample_errors),
+            "low_expected_script_reference_samples": sum(
+                s["reference_expected_script_fraction"] is not None
+                and s["reference_expected_script_fraction"] < 0.5
+                for s in sample_errors
+            ),
+            "low_expected_script_prediction_samples": sum(
+                s["prediction_expected_script_fraction"] is not None
+                and s["prediction_expected_script_fraction"] < 0.5
+                for s in sample_errors
+            ),
+        },
+        "sample_diagnostics": sample_errors,
         "worst_samples": sorted(
             sample_errors,
             key=lambda s: (

@@ -34,31 +34,39 @@ def run(
         subset.write_text(
             "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in selected), encoding="utf-8"
         )
-        for psm in psms:
-            result = benchmark(
-                subset,
-                Tesseract(f"{language}+eng", psm),
-                out / "runs" / f"{language}-psm{psm}",
-                task="block",
-                resume=resume,
-            )
-            runs.append(
-                {
-                    "language": language,
-                    "psm": psm,
-                    "run_id": result["run_id"],
-                    "samples": result["evaluated_samples"],
-                    "failed": result["failed_samples"],
-                    "raw": result["raw"],
-                    "normalized": result["normalized"],
-                    "mean_latency_seconds": result["mean_latency_seconds"],
-                    "p95_latency_seconds": result["latency_percentiles_seconds"]["95"],
-                    "throughput_samples_per_second": result["throughput_samples_per_second"],
-                    "engine": result["configuration"],
-                    "dataset_sha256": result["dataset"]["manifest_sha256"],
-                    "image_sha256": result["dataset"]["image_sha256"],
-                }
-            )
+        for policy, requested in [
+            ("indic-only", language),
+            ("indic-plus-english", f"{language}+eng"),
+        ]:
+            for psm in psms:
+                result = benchmark(
+                    subset,
+                    Tesseract(requested, psm),
+                    out / "runs" / f"{language}-{policy}-psm{psm}",
+                    task="block",
+                    resume=resume,
+                )
+                runs.append(
+                    {
+                        "language": language,
+                        "language_policy": policy,
+                        "psm": psm,
+                        "run_id": result["run_id"],
+                        "samples": result["evaluated_samples"],
+                        "failed": result["failed_samples"],
+                        "raw": result["raw"],
+                        "normalized": result["normalized"],
+                        "mean_latency_seconds": result["mean_latency_seconds"],
+                        "p95_latency_seconds": result["latency_percentiles_seconds"]["95"],
+                        "throughput_samples_per_second": result["throughput_samples_per_second"],
+                        "engine": result["configuration"],
+                        "diagnostics": result["diagnostics"],
+                        "sample_diagnostics": result["sample_diagnostics"],
+                        "worst_samples": result["worst_samples"],
+                        "dataset_sha256": result["dataset"]["manifest_sha256"],
+                        "image_sha256": result["dataset"]["image_sha256"],
+                    }
+                )
     summary = {
         "kind": "publisher-labeled-small-pilot",
         "environment": provenance(),
@@ -75,7 +83,7 @@ def run(
             "Publisher labels have not been independently human-verified.",
             "Original document grouping is unverified; blocks may be correlated.",
             "Not a full-page or cropped-line benchmark; no 90% claim.",
-            "Two fixed PSM settings are exploratory; keep a separate test corpus.",
+            "PSM/language-pack comparisons are exploratory; keep a separate test corpus.",
             "Latency includes loading and preprocessing; no warmup protocol.",
         ],
     }
@@ -84,6 +92,8 @@ def run(
         {
             "language": r["language"],
             "psm": r["psm"],
+            "language_policy": r["language_policy"],
+            "empty_predictions": r["diagnostics"]["empty_predictions"],
             "samples": r["samples"],
             "failed": r["failed"],
             "normalized_cer": r["normalized"]["cer"],

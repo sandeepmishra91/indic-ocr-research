@@ -60,6 +60,9 @@ def fake_api(monkeypatch):
     calls = []
 
     class Api:
+        def __init__(self, **kwargs):
+            assert kwargs == {"endpoint": "https://huggingface.co"}
+
         def dataset_info(self, *args, **kwargs):
             calls.append(kwargs)
             return info
@@ -102,6 +105,9 @@ def test_network_errors_do_not_leak_token(config, tmp_path, monkeypatch):
     secret = "unit-test-sensitive-value"
 
     class Api:
+        def __init__(self, **kwargs):
+            assert kwargs == {"endpoint": "https://huggingface.co"}
+
         def dataset_info(self, *args, **kwargs):
             raise RuntimeError(secret)
 

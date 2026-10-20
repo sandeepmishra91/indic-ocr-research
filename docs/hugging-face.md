@@ -14,7 +14,8 @@ indicocr hub import --config configs/hf_indicdlp.yaml --out data/indicdlp-pilot
 
 Hub commands read `HF_TOKEN` from the process environment first, then only that key
 from `.env` (override with `--env-file`). The token is passed to the official Hub
-client. It is never saved in recipes, receipts, reports or CLI output. `.env` remains
+client. The client endpoint is fixed to https://huggingface.co, including file retrieval;
+HF_ENDPOINT cannot redirect this credential to a different server. It is never saved in recipes, receipts, reports or CLI output. `.env` remains
 ignored. No login command or credential upload is needed for the public pilot.
 Errors omit underlying HF exception text because signed URLs may be present there.
 
@@ -64,7 +65,7 @@ The receipt contains local paths; review receipts before sharing them.
 ## Actual OCR experiment
 
 Install Tesseract with `eng`, `hin` and `mal` packs. This runner tests PSM 3 (automatic
-layout) and PSM 6 (single uniform block) using `hin+eng` or `mal+eng` per language:
+layout) and PSM 6 (single uniform block) using `hin`/`mal` alone and `hin+eng`/`mal+eng` (eight runs over the same 20 blocks):
 
 ```bash
 python scripts/run_hf_pilot.py
@@ -76,7 +77,7 @@ Resume reuses successful predictions with matching dataset/engine identities. Su
 JSON/Markdown/CSV contain measured scores, failures, latency, engine version, traineddata
 hashes when available, image hashes, configuration and provenance. They contain no
 raw images or transcriptions. Detailed benchmark reports and journals stay local.
-Exploring two PSM settings on these examples is exploratory tuning; obtain a separate
+Comparing Indic-only with Indic-plus-English packs and two PSM settings on these examples is exploratory tuning; obtain a separate
 held-out human-audited corpus before making a quality claim.
 
 If local installation is inconvenient, run the **Small HF block OCR pilot** workflow
@@ -88,3 +89,7 @@ uploads `.env`. Ordinary CI tests use mock metadata and synthetic local Parquet 
 Upstream references: [file downloads](https://huggingface.co/docs/huggingface_hub/guides/download),
 [cache behavior](https://huggingface.co/docs/huggingface_hub/guides/manage-cache),
 [offline mode](https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables).
+
+The summary also includes per-sample numeric script/empty-output diagnostics without
+raw text. These flags can help locate mixed-script references or recognition failures;
+they do not establish label correctness and never exclude difficult samples.

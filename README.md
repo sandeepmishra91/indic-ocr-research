@@ -144,7 +144,7 @@ No neural weights are downloaded or trained on these evaluation blocks.
 
 With local Tesseract language packs, run `python scripts/run_hf_pilot.py`; alternatively
 use the opt-in **Small HF block OCR pilot** GitHub Actions workflow. It compares
-PSM 3/6, uses per-language packs, and uploads summary metrics without source images
+PSM 3/6, compares Indic-only with Indic-plus-English packs, and uploads summary metrics without source images
 or labels. See [Hub usage and limitations](docs/hugging-face.md).
 
 Long benchmarks can continue after interruption:

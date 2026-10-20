@@ -112,7 +112,7 @@ def plan_dataset(
     else:
         HfApi, _ = _api()
         try:
-            info = HfApi().dataset_info(
+            info = HfApi(endpoint="https://huggingface.co").dataset_info(
                 spec["repo_id"],
                 revision=spec["revision"],
                 files_metadata=True,
@@ -168,6 +168,7 @@ def import_dataset(
                     revision=spec["revision"],
                     cache_dir=str(cache),
                     local_files_only=offline,
+                    endpoint="https://huggingface.co",
                     token=token if token else False,
                 )
             )

@@ -104,3 +104,17 @@ Updated local verification: 56 passed and 1 skipped with CPU torch; 52 passed an
 1 skipped without torch; Ruff passed. Hosted checks for the latest commit are linked
 from the pull request. Initial hosted CI also passed with 9 integration tests,
 including real English Tesseract OCR.
+
+## Hugging Face and benchmark follow-up
+
+A real metadata-first import of 20 publisher-labeled Hindi/Malayalam blocks succeeded,
+downloading exactly 1,674,236 shard bytes into an ignored cache. `hub inspect --offline`
+and `hub import --offline` reused it successfully. Local tests expanded to 80 passed,
+1 skipped with CPU torch and optional Hub dependencies; the skip is local Tesseract.
+
+An opt-in hosted pilot successfully executed actual Tesseract PSM 3/6 inference using
+Hindi/Malayalam plus English packs. No execution failures occurred. The unexpectedly
+high Malayalam WER prompted an additional Indic-only versus Indic-plus-English
+comparison and text-script diagnostics; see the pilot result record for measured
+outputs. Publisher labels remain unverified. These are convenience-sampled blocks,
+not a representative corpus or proof of production accuracy.

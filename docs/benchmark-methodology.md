@@ -64,3 +64,10 @@ Publisher-provided data imported from Hugging Face is labeled unverified. The sm
 IndicDLP pilot uses block-level metrics, explicit CC-BY-4.0 attribution, source links,
 commit hashes and a nonrepresentative-sample warning. It is not a substitute for
 independently human-audited ground truth or production scan evaluation.
+
+Script diagnostics count Unicode letters/marks whose names identify Devanagari,
+Malayalam or Latin; remaining letters/marks are grouped as Other. This is a limited
+name-based heuristic, not a complete Unicode Script-property implementation or a
+language detector. Mixed-language and numeric captions can be valid. Low expected-script
+fractions and empty predictions are reported for investigation, never filtered out
+or used to remove combining marks from scoring.
