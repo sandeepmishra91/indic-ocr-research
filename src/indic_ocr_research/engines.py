@@ -1,10 +1,11 @@
+import re
 import shutil
 import subprocess
 import time
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from .documents import load_image
+from .documents import load_image, source_id
 
 
 class Tesseract:
@@ -16,10 +17,30 @@ class Tesseract:
             raise ValueError("PSM must be 0..13 and timeout positive")
         self.language, self.psm, self.timeout = language, psm, timeout
         self.version = self._run(["--version"]).splitlines()[0]
-        self.languages = self._run(["--list-langs"]).splitlines()[1:]
+        listing = self._run(["--list-langs"]).splitlines()
+        self.languages = [line.strip() for line in listing[1:]]
+        directory = re.search(r'"([^"\n]+)"', listing[0]) if listing else None
+        self.tessdata_dir = Path(directory.group(1)) if directory else None
         missing = set(language.split("+")) - set(self.languages) if language else set()
         if missing:
             raise RuntimeError(f"Missing Tesseract language packs: {sorted(missing)}")
+
+    def identity(self) -> dict:
+        return {
+            "engine": "tesseract",
+            "version": self.version,
+            "language": self.language,
+            "psm": self.psm,
+            "timeout": self.timeout,
+            "preprocessing": "validated-first-frame-png-v1",
+            "traineddata_sha256": {
+                language: source_id(self.tessdata_dir / f"{language}.traineddata")
+                if self.tessdata_dir and (self.tessdata_dir / f"{language}.traineddata").is_file()
+                else None
+                for language in (self.language or "").split("+")
+                if language
+            },
+        }
 
     def _run(self, arguments: list[str]) -> str:
         try:

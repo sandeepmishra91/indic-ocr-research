@@ -29,3 +29,10 @@ Transitive packages (including Click, Rich, torch runtime libraries and renderer
 binaries) retain their own notices. No claim is made that a source license alone
 covers every accelerator/runtime image. Datasets and trained weights require a
 separate documented license and provenance review. None are included in this release.
+
+Optional Hub integration adds [huggingface_hub (Apache-2.0)](https://github.com/huggingface/huggingface_hub/blob/main/LICENSE),
+[Apache Arrow/PyArrow (Apache-2.0 and bundled notices)](https://github.com/apache/arrow/blob/main/LICENSE.txt),
+and [python-dotenv (BSD-3-Clause)](https://github.com/theskumar/python-dotenv/blob/main/LICENSE).
+The separate, publisher-declared CC-BY-4.0 IndicDLP sample is downloaded only on request,
+with attribution in receipts/reports. No dataset images or labels are vendored or included
+in the summary artifacts. See docs/hugging-face.md for the pinned source and caveats.

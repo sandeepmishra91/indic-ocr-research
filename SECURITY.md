@@ -14,3 +14,10 @@ service without authentication, isolation, quotas and output sanitization.
 Before committing, inspect staged content for tokens, personal information, private
 source/data, .env/cloud credentials and large outputs. Generated reports include
 transcriptions and local paths and must be reviewed before external sharing.
+
+Hugging Face commands read only HF_TOKEN from the environment or explicitly selected
+.env file. No token is recorded in import receipts or network error messages. Optional
+imports require pinned revisions and declared open licenses; they never execute remote
+dataset/model code. The opt-in hosted pilot uses a public dataset without secrets and
+uploads summary metrics only. Keep detailed journals and third-party source data private
+unless redistribution and privacy review explicitly permit sharing them.

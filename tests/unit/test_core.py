@@ -136,7 +136,7 @@ def test_benchmark_and_report(manifest, tmp_path):
     assert result["dataset"]["image_sha256"]["2"]
     assert result["dataset"]["manifest_sha256"]
     assert result["predictions"][0]["version"] == "test"
-    assert json.loads((tmp_path / "reports/benchmark.json").read_text())["schema_version"] == 1
+    assert json.loads((tmp_path / "reports/benchmark.json").read_text())["schema_version"] == 2
     assert "| raw |" in (tmp_path / "reports/benchmark.md").read_text()
     assert compare(tmp_path / "reports", tmp_path / "comparison.md") == 1
     assert (tmp_path / "comparison.csv").exists()

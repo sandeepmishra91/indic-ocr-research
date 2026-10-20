@@ -19,12 +19,14 @@ baseline = typer.Typer(no_args_is_help=True)
 manifest_app = typer.Typer(no_args_is_help=True)
 benchmark_app = typer.Typer(no_args_is_help=True)
 report_app = typer.Typer(no_args_is_help=True)
+hub_app = typer.Typer(no_args_is_help=True)
 for name, sub in [
     ("pdf", pdf),
     ("baseline", baseline),
     ("manifest", manifest_app),
     ("benchmark", benchmark_app),
     ("report", report_app),
+    ("hub", hub_app),
 ]:
     app.add_typer(sub, name=name)
 
@@ -119,6 +121,8 @@ def benchmark_run(
     nfc: bool = True,
     whitespace: bool = True,
     device: str = "auto",
+    resume: bool = False,
+    retry_failed: bool = False,
 ) -> None:
     if engine == "tesseract":
         adapter = Tesseract(lang, psm)
@@ -130,7 +134,7 @@ def benchmark_run(
         adapter = CRNNEngine(checkpoint, device)
     else:
         raise ValueError("engine must be tesseract or crnn")
-    result = benchmark(manifest, adapter, out, split, task, nfc, whitespace)
+    result = benchmark(manifest, adapter, out, split, task, nfc, whitespace, resume, retry_failed)
     emit({key: result[key] for key in ["evaluated_samples", "failed_samples", "raw", "normalized"]})
     if result["failed_samples"]:
         raise typer.Exit(1)
@@ -159,6 +163,35 @@ def report_compare(
     out: Annotated[Path, typer.Option()],
 ) -> None:
     emit({"runs": compare(inputs, out), "output": str(out)})
+
+
+@hub_app.command("inspect")
+@guarded
+def hub_inspect(
+    config: File,
+    cache_dir: Path = Path("outputs/hf-cache"),
+    offline: bool = False,
+    env_file: Path = Path(".env"),
+) -> None:
+    """Inspect pinned dataset license and exact byte budget without downloading shards."""
+    from .hub import plan_dataset
+
+    emit(plan_dataset(config, cache_dir, offline, env_file))
+
+
+@hub_app.command("import")
+@guarded
+def hub_import(
+    config: File,
+    out: Annotated[Path, typer.Option()],
+    cache_dir: Path = Path("outputs/hf-cache"),
+    offline: bool = False,
+    env_file: Path = Path(".env"),
+) -> None:
+    """Import only the explicit small Parquet shards listed in a reviewed recipe."""
+    from .hub import import_dataset
+
+    emit(import_dataset(config, out, cache_dir, offline, env_file))
 
 
 if __name__ == "__main__":

@@ -22,3 +22,8 @@ reports/
 
 # Local implementation brief
 prompt.md
+
+# Optional Hub shards/caches
+*.parquet
+.hf_cache/
+.cache/

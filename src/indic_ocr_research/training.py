@@ -215,6 +215,16 @@ class CRNNEngine:
         self.model.eval()
         self.version = source_id(checkpoint)
 
+    def identity(self) -> dict:
+        return {
+            "engine": "crnn",
+            "version": self.version,
+            "device": str(self.device),
+            "torch": str(torch.__version__),
+            "height": self.config["height"],
+            "max_width": self.config["max_width"],
+        }
+
     def recognize(self, image: Path) -> dict:
         started = time.perf_counter()
         tensor = line_tensor(image, self.config["height"], self.config["max_width"])

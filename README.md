@@ -1,7 +1,7 @@
 # Indic OCR Research Lab
 
 Offline, open-source OCR research for scanned Indian documents. Python 3.11+.
-Hindi and Malayalam are initial research priorities. **No measured Indian-language
+Hindi and Malayalam are initial research priorities. **No independently validated production
 accuracy, trained production model, ARM performance, or MI300X results are claimed.**
 The 90% word recognition goal and expansion to 22 languages are research targets.
 
@@ -126,6 +126,38 @@ control normalized scoring; raw scoring always preserves original labels/predict
 No empty-dataset accuracy is emitted. Failures are recorded and CLI exits nonzero;
 accuracy covers successful samples only. Never compare line and page scores as though
 they measure the same problem. Details: [benchmark methodology](docs/benchmark-methodology.md).
+
+## Hugging Face on a slow connection
+
+```bash
+python -m pip install -e ".[hub]"
+indicocr hub inspect --config configs/hf_indicdlp.yaml
+indicocr hub import --config configs/hf_indicdlp.yaml --out data/indicdlp-pilot
+# Reuse the same local cache without network:
+indicocr hub import --config configs/hf_indicdlp.yaml --out data/indicdlp-pilot --offline
+```
+
+The reviewed CC-BY-4.0 recipe downloads only 1.67 MB: ten Hindi and ten Malayalam
+text blocks pinned to one commit. `.env` may contain `HF_TOKEN`; its value is never
+written to logs or reports. Publisher labels have not been independently human-verified.
+No neural weights are downloaded or trained on these evaluation blocks.
+
+With local Tesseract language packs, run `python scripts/run_hf_pilot.py`; alternatively
+use the opt-in **Small HF block OCR pilot** GitHub Actions workflow. It compares
+PSM 3/6, uses per-language packs, and uploads summary metrics without source images
+or labels. See [Hub usage and limitations](docs/hugging-face.md).
+
+Long benchmarks can continue after interruption:
+
+```bash
+indicocr benchmark run --manifest data/eval.jsonl --engine tesseract --lang hin+eng --task page --out reports/tesseract --resume
+```
+
+`--resume` rejects changed images, labels, normalization or engine identities.
+Add `--retry-failed` to rerun failures while retaining successful predictions.
+Reports include per-language CER/WER, worst-sample IDs and latency percentiles.
+Use a new output directory for independent runs. Block, line and page metrics remain
+separate; replayed cached predictions do not count as fresh inference throughput.
 
 ## Development and research
 
