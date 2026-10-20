@@ -1,0 +1,9 @@
+# SYNTHETIC mechanics only. Not an accuracy experiment.
+manifest: ../outputs/smoke-data/lines.jsonl
+output_dir: ../outputs/smoke
+epochs: 1
+batch_size: 2
+hidden: 8
+device: cpu
+amp: false
+threads: 2

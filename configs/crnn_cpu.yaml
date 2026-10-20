@@ -1,0 +1,15 @@
+# Paths resolve relative to this configuration file.
+manifest: ../data/lines.jsonl
+output_dir: ../outputs/crnn_cpu
+epochs: 10
+batch_size: 8
+learning_rate: 0.001
+optimizer: adam
+hidden: 64
+height: 32
+max_width: 2048
+seed: 42
+device: cpu
+amp: false
+gradient_clip: 5.0
+threads: 2
