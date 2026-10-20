@@ -159,6 +159,16 @@ Reports include per-language CER/WER, worst-sample IDs and latency percentiles.
 Use a new output directory for independent runs. Block, line and page metrics remain
 separate; replayed cached predictions do not count as fresh inference throughput.
 
+The [executed pilot and label audit](docs/experiments/indicdlp-pilot.md) found a malformed
+Malayalam reference containing analysis prose. Its aggregate scores are diagnostic only.
+Audit imported labels before treating any result as an accuracy benchmark:
+
+```bash
+indicocr manifest audit --path data/indicdlp-pilot/manifest.jsonl --out outputs/label-audit.json --review-manifest outputs/review-queue.jsonl --fail-on-flags
+```
+
+This writes a review queue and exits nonzero for flags; it never changes the source labels.
+
 ## Development and research
 
 ```bash

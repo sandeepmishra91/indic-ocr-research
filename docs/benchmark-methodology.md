@@ -71,3 +71,12 @@ name-based heuristic, not a complete Unicode Script-property implementation or a
 language detector. Mixed-language and numeric captions can be valid. Low expected-script
 fractions and empty predictions are reported for investigation, never filtered out
 or used to remove combining marks from scoring.
+
+## Label-quality block found in the pilot
+
+The [executed pilot and post-run audit](experiments/indicdlp-pilot.md) found a malformed Malayalam
+reference containing image-analysis prose. The original scores are retained for
+traceability, but the affected aggregate must not be treated as validated OCR accuracy.
+Run `indicocr manifest audit --path data/indicdlp-pilot/manifest.jsonl --out outputs/audit.json
+--review-manifest outputs/review.jsonl --fail-on-flags` to produce a review queue.
+Flags never alter or exclude samples. No heuristic flags is also not proof of correctness.

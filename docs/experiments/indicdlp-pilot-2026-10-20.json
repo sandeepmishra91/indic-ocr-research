@@ -1,0 +1,580 @@
+{
+  "kind": "diagnostic-pilot-with-label-quality-block",
+  "workflow_url": "https://github.com/sandeepmishra91/indic-ocr-research/actions/runs/39380976015",
+  "tested_branch_commit": "f44e7c36983906d6ff4f0f607a280341fc4917e7",
+  "summary_artifact_sha256": "04a74bc0106bc5b228f3f842463faef840b420b99ad88b48f945619012f9bd58",
+  "source": {
+    "repo_id": "onath/indicdlp-eval-set-22-sample",
+    "revision": "a290507d248c6fab61fcf64bbd9f7a7f3c3384f7",
+    "license": "cc-by-4.0",
+    "license_url": "https://huggingface.co/datasets/onath/indicdlp-eval-set-22-sample/blob/a290507d248c6fab61fcf64bbd9f7a7f3c3384f7/README.md",
+    "attribution": "IndicDLP public sample by onath on Hugging Face"
+  },
+  "source_artifacts": [
+    {
+      "file": "data/Hindi-00000-of-00001.parquet",
+      "bytes": 1260549,
+      "sha256": "4c36b741fee76ee03cfff298c664930afc64658c62bf8a6eaaa9df8c4c8f1969"
+    },
+    {
+      "file": "data/Malayalam-00000-of-00001.parquet",
+      "bytes": 413687,
+      "sha256": "052c625cad203e91349686fb7045bbb044ee36ace832756d6303a239bee8b79b"
+    }
+  ],
+  "environment": {
+    "timestamp": "2026-10-20T06:34:13.877839+00:00",
+    "git_sha": "58839d3d495f27cd2ff23bd646e8bc056f9e6e54",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "python": "3.11.17",
+    "versions": {
+      "indic-ocr-research": "0.1.0",
+      "Pillow": "13.0.0",
+      "numpy": "2.4.6",
+      "pypdf": "6.21.1",
+      "pypdfium2": "5.14.0",
+      "torch": null
+    }
+  },
+  "cpu_count": 4,
+  "omp_thread_limit": "2",
+  "runs": [
+    {
+      "language": "hin",
+      "language_policy": "indic-only",
+      "psm": 3,
+      "run_id": "78b55738f59f3ca901f64541428a55ce87b8d3291e6cb47193f0d0b1bcc2bc40",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 254,
+        "reference_characters": 4562,
+        "word_edits": 112,
+        "reference_words": 825,
+        "cer": 0.055677334502411226,
+        "wer": 0.13575757575757577,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 194,
+        "reference_characters": 4558,
+        "word_edits": 112,
+        "reference_words": 825,
+        "cer": 0.04256252742430891,
+        "wer": 0.13575757575757577,
+        "exact_accuracy": 0.1
+      },
+      "mean_latency_seconds": 0.3697724899000022,
+      "p95_latency_seconds": 1.1580904772500058,
+      "throughput_samples_per_second": 2.7030625183128865,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "hin",
+        "psm": 3,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "hin": "4c73ffc59d497c186b19d1e90f5d721d678ea6b2e277b719bee4e2af12271825"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 2,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 0,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "f1a8305255309a9555e89f5f030da00369c415c71eaca8184136e80621ee00ef",
+      "image_sha256": {
+        "59fc622b6e3c8b04b0c2e6a5": "b0856d900eb7fda8265bc3af120522c90f2f806132ef659eadeaf5e0e8938bac",
+        "5ef9c96c6563783370b8ee9f": "5b18128cf83f2fe695ccfe7520332b9cab910dd3ca2a3190d5ef8ffc85f37f42",
+        "79f343fcce04f6a6ca0b8fef": "64e6a47a48a3adbba79bf12f7904cf1d5d0878dfbafab95a8f40a538fb14df23",
+        "9fe9c1cce819a75476a8216a": "05c8ab5615fb0fa25295f84c8cecf5f31696cfe7197b436725862fe4b71d10b0",
+        "c232fd502fc6980d69f675f5": "9dafa6d0340d3da0f306b386c783409400421a6f9e78ed83957967649c0c48bc",
+        "c805405c4bacf2141e47b5ed": "044917e3336457678bdcc8cb4e8a6cf4824ed37bdb3a89d911d85f3da726785d",
+        "85de62d3987dc0844700887c": "0fe7b01181b1e8a4b38507364d14417cf5a6040ca13f7c822bea7e28785033e1",
+        "48a3aac11e4752102bdd3477": "b4af5f11ec17f4cbe278b3c24521286d8158c58f1b27586a3dd03dd5e40c8879",
+        "75112e40d726bed97023f203": "9e8414096aa5c39b1921e81718668494ccdf43e0ad33e09fdb9ff7105801923e",
+        "3ab27689df4d58848dcbb006": "aa50db06a4334fa382d8535261d8214a18790f46b051530dcf4434aca44945ea"
+      }
+    },
+    {
+      "language": "hin",
+      "language_policy": "indic-only",
+      "psm": 6,
+      "run_id": "fac44baf4170c949bcf75c2125dbb7f984d169cdd495477507c7f327278ced93",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 251,
+        "reference_characters": 4562,
+        "word_edits": 112,
+        "reference_words": 825,
+        "cer": 0.05501972818939062,
+        "wer": 0.13575757575757577,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 193,
+        "reference_characters": 4558,
+        "word_edits": 112,
+        "reference_words": 825,
+        "cer": 0.04234313295304958,
+        "wer": 0.13575757575757577,
+        "exact_accuracy": 0.1
+      },
+      "mean_latency_seconds": 0.3527092362000019,
+      "p95_latency_seconds": 1.1041120124500072,
+      "throughput_samples_per_second": 2.8338320365738734,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "hin",
+        "psm": 6,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "hin": "4c73ffc59d497c186b19d1e90f5d721d678ea6b2e277b719bee4e2af12271825"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 0,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 0,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "f1a8305255309a9555e89f5f030da00369c415c71eaca8184136e80621ee00ef",
+      "image_sha256": {
+        "59fc622b6e3c8b04b0c2e6a5": "b0856d900eb7fda8265bc3af120522c90f2f806132ef659eadeaf5e0e8938bac",
+        "5ef9c96c6563783370b8ee9f": "5b18128cf83f2fe695ccfe7520332b9cab910dd3ca2a3190d5ef8ffc85f37f42",
+        "79f343fcce04f6a6ca0b8fef": "64e6a47a48a3adbba79bf12f7904cf1d5d0878dfbafab95a8f40a538fb14df23",
+        "9fe9c1cce819a75476a8216a": "05c8ab5615fb0fa25295f84c8cecf5f31696cfe7197b436725862fe4b71d10b0",
+        "c232fd502fc6980d69f675f5": "9dafa6d0340d3da0f306b386c783409400421a6f9e78ed83957967649c0c48bc",
+        "c805405c4bacf2141e47b5ed": "044917e3336457678bdcc8cb4e8a6cf4824ed37bdb3a89d911d85f3da726785d",
+        "85de62d3987dc0844700887c": "0fe7b01181b1e8a4b38507364d14417cf5a6040ca13f7c822bea7e28785033e1",
+        "48a3aac11e4752102bdd3477": "b4af5f11ec17f4cbe278b3c24521286d8158c58f1b27586a3dd03dd5e40c8879",
+        "75112e40d726bed97023f203": "9e8414096aa5c39b1921e81718668494ccdf43e0ad33e09fdb9ff7105801923e",
+        "3ab27689df4d58848dcbb006": "aa50db06a4334fa382d8535261d8214a18790f46b051530dcf4434aca44945ea"
+      }
+    },
+    {
+      "language": "hin",
+      "language_policy": "indic-plus-english",
+      "psm": 3,
+      "run_id": "742ce62b2ee8e740723c7f75f89e59e47887fb6496f41064a95f5c60892b72bb",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 286,
+        "reference_characters": 4562,
+        "word_edits": 115,
+        "reference_words": 825,
+        "cer": 0.06269180184129768,
+        "wer": 0.1393939393939394,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 225,
+        "reference_characters": 4558,
+        "word_edits": 115,
+        "reference_words": 825,
+        "cer": 0.04936375603334796,
+        "wer": 0.1393939393939394,
+        "exact_accuracy": 0.1
+      },
+      "mean_latency_seconds": 0.6478514430000019,
+      "p95_latency_seconds": 1.9686072986500016,
+      "throughput_samples_per_second": 1.5431760957516671,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "hin+eng",
+        "psm": 3,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "hin": "4c73ffc59d497c186b19d1e90f5d721d678ea6b2e277b719bee4e2af12271825",
+          "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 2,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 0,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "f1a8305255309a9555e89f5f030da00369c415c71eaca8184136e80621ee00ef",
+      "image_sha256": {
+        "59fc622b6e3c8b04b0c2e6a5": "b0856d900eb7fda8265bc3af120522c90f2f806132ef659eadeaf5e0e8938bac",
+        "5ef9c96c6563783370b8ee9f": "5b18128cf83f2fe695ccfe7520332b9cab910dd3ca2a3190d5ef8ffc85f37f42",
+        "79f343fcce04f6a6ca0b8fef": "64e6a47a48a3adbba79bf12f7904cf1d5d0878dfbafab95a8f40a538fb14df23",
+        "9fe9c1cce819a75476a8216a": "05c8ab5615fb0fa25295f84c8cecf5f31696cfe7197b436725862fe4b71d10b0",
+        "c232fd502fc6980d69f675f5": "9dafa6d0340d3da0f306b386c783409400421a6f9e78ed83957967649c0c48bc",
+        "c805405c4bacf2141e47b5ed": "044917e3336457678bdcc8cb4e8a6cf4824ed37bdb3a89d911d85f3da726785d",
+        "85de62d3987dc0844700887c": "0fe7b01181b1e8a4b38507364d14417cf5a6040ca13f7c822bea7e28785033e1",
+        "48a3aac11e4752102bdd3477": "b4af5f11ec17f4cbe278b3c24521286d8158c58f1b27586a3dd03dd5e40c8879",
+        "75112e40d726bed97023f203": "9e8414096aa5c39b1921e81718668494ccdf43e0ad33e09fdb9ff7105801923e",
+        "3ab27689df4d58848dcbb006": "aa50db06a4334fa382d8535261d8214a18790f46b051530dcf4434aca44945ea"
+      }
+    },
+    {
+      "language": "hin",
+      "language_policy": "indic-plus-english",
+      "psm": 6,
+      "run_id": "06d62b2a2eff4a34133baefca3dc976097e33bcbf0a44fce50f338fc9f725560",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 281,
+        "reference_characters": 4562,
+        "word_edits": 114,
+        "reference_words": 825,
+        "cer": 0.061595791319596666,
+        "wer": 0.13818181818181818,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 222,
+        "reference_characters": 4558,
+        "word_edits": 114,
+        "reference_words": 825,
+        "cer": 0.04870557261956999,
+        "wer": 0.13818181818181818,
+        "exact_accuracy": 0.2
+      },
+      "mean_latency_seconds": 0.6377072732000002,
+      "p95_latency_seconds": 1.9056302672499983,
+      "throughput_samples_per_second": 1.567716845785951,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "hin+eng",
+        "psm": 6,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "hin": "4c73ffc59d497c186b19d1e90f5d721d678ea6b2e277b719bee4e2af12271825",
+          "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 0,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 0,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "f1a8305255309a9555e89f5f030da00369c415c71eaca8184136e80621ee00ef",
+      "image_sha256": {
+        "59fc622b6e3c8b04b0c2e6a5": "b0856d900eb7fda8265bc3af120522c90f2f806132ef659eadeaf5e0e8938bac",
+        "5ef9c96c6563783370b8ee9f": "5b18128cf83f2fe695ccfe7520332b9cab910dd3ca2a3190d5ef8ffc85f37f42",
+        "79f343fcce04f6a6ca0b8fef": "64e6a47a48a3adbba79bf12f7904cf1d5d0878dfbafab95a8f40a538fb14df23",
+        "9fe9c1cce819a75476a8216a": "05c8ab5615fb0fa25295f84c8cecf5f31696cfe7197b436725862fe4b71d10b0",
+        "c232fd502fc6980d69f675f5": "9dafa6d0340d3da0f306b386c783409400421a6f9e78ed83957967649c0c48bc",
+        "c805405c4bacf2141e47b5ed": "044917e3336457678bdcc8cb4e8a6cf4824ed37bdb3a89d911d85f3da726785d",
+        "85de62d3987dc0844700887c": "0fe7b01181b1e8a4b38507364d14417cf5a6040ca13f7c822bea7e28785033e1",
+        "48a3aac11e4752102bdd3477": "b4af5f11ec17f4cbe278b3c24521286d8158c58f1b27586a3dd03dd5e40c8879",
+        "75112e40d726bed97023f203": "9e8414096aa5c39b1921e81718668494ccdf43e0ad33e09fdb9ff7105801923e",
+        "3ab27689df4d58848dcbb006": "aa50db06a4334fa382d8535261d8214a18790f46b051530dcf4434aca44945ea"
+      }
+    },
+    {
+      "language": "mal",
+      "language_policy": "indic-only",
+      "psm": 3,
+      "run_id": "d19a83f74ddf1608b4a9216ee43616421a13441541f5b81dc3f21dde17600151",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 1419,
+        "reference_characters": 2025,
+        "word_edits": 264,
+        "reference_words": 290,
+        "cer": 0.7007407407407408,
+        "wer": 0.9103448275862069,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 1404,
+        "reference_characters": 2020,
+        "word_edits": 264,
+        "reference_words": 290,
+        "cer": 0.695049504950495,
+        "wer": 0.9103448275862069,
+        "exact_accuracy": 0.3
+      },
+      "mean_latency_seconds": 0.08240303590000195,
+      "p95_latency_seconds": 0.20631325765000016,
+      "throughput_samples_per_second": 12.129845262899956,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "mal",
+        "psm": 3,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "mal": "bd05cbf1b197e7810d2903419aedb06f9ef77bfedf50b358673c1d18d707cdb4"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 0,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 1,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "92e432990629795c50d416ea86e0beb58f80de6015f87b51ca89f5dc305d808e",
+      "image_sha256": {
+        "c1c242680076f3ac713d2396": "e269b27962bc8a8233fa2af9b9221123426408c48de9d94235c2f523a32df6a0",
+        "87b8c44906b678e72a586fbc": "d071c055982e1d683e70a7e62cfc113918fc0849830b1994ce60496246138ebd",
+        "ed19953509a13c8e486313a3": "cb6bdd112a2345b7f63567245ad65a8e448322a55243c2c9e9159ede2b877bfa",
+        "bc94ad0fc2186773c4d69514": "1cb92e50002bc24f7fa0cbd19dd868ed67d202d0615ee6c7fcd53c6ea723aa96",
+        "191e7e82ab8eaca403f4a0a0": "6b1c735d61c5eb8e195cd2f801a99b0a4638daf053e40e0e13a6085811a9ba2e",
+        "27ca9e6492063d4d1e33dd9b": "5e2af833cbd7f81070883e0f7668bd57dbc9c671d3b81bf1678dfd149a81b598",
+        "6307e8965d97bbb8833ab060": "cc29184ec4bb08db02031a64b472fdf0234017d430810f5bc1eba33840b4741c",
+        "dc8c517682811a8fa0252bc6": "fc81e8c2b10a6dc097333a902ddfe38fb42423caecc6e860de8e05020ad2b78e",
+        "369e127a8a58e55905c96485": "8010f3b3907a62fb59ad4cf67c93ce0d9871b95a12714e015cbcd530d3a3f247",
+        "62034cac02bd37e4f548b7e4": "cf449d18aaa06f34e71f3d57fde22eed3d1f8cb8db7dc0754fc7696b736cbcfd"
+      }
+    },
+    {
+      "language": "mal",
+      "language_policy": "indic-only",
+      "psm": 6,
+      "run_id": "04f4a338f56fdc3759b4f1e0d2b9ca6425c3caaff8f54c3ef50bc8293400a275",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 1424,
+        "reference_characters": 2025,
+        "word_edits": 265,
+        "reference_words": 290,
+        "cer": 0.7032098765432099,
+        "wer": 0.9137931034482759,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 1407,
+        "reference_characters": 2020,
+        "word_edits": 265,
+        "reference_words": 290,
+        "cer": 0.6965346534653465,
+        "wer": 0.9137931034482759,
+        "exact_accuracy": 0.3
+      },
+      "mean_latency_seconds": 0.08066649769999827,
+      "p95_latency_seconds": 0.19961554130000098,
+      "throughput_samples_per_second": 12.39103971750901,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "mal",
+        "psm": 6,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "mal": "bd05cbf1b197e7810d2903419aedb06f9ef77bfedf50b358673c1d18d707cdb4"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 0,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 1,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "92e432990629795c50d416ea86e0beb58f80de6015f87b51ca89f5dc305d808e",
+      "image_sha256": {
+        "c1c242680076f3ac713d2396": "e269b27962bc8a8233fa2af9b9221123426408c48de9d94235c2f523a32df6a0",
+        "87b8c44906b678e72a586fbc": "d071c055982e1d683e70a7e62cfc113918fc0849830b1994ce60496246138ebd",
+        "ed19953509a13c8e486313a3": "cb6bdd112a2345b7f63567245ad65a8e448322a55243c2c9e9159ede2b877bfa",
+        "bc94ad0fc2186773c4d69514": "1cb92e50002bc24f7fa0cbd19dd868ed67d202d0615ee6c7fcd53c6ea723aa96",
+        "191e7e82ab8eaca403f4a0a0": "6b1c735d61c5eb8e195cd2f801a99b0a4638daf053e40e0e13a6085811a9ba2e",
+        "27ca9e6492063d4d1e33dd9b": "5e2af833cbd7f81070883e0f7668bd57dbc9c671d3b81bf1678dfd149a81b598",
+        "6307e8965d97bbb8833ab060": "cc29184ec4bb08db02031a64b472fdf0234017d430810f5bc1eba33840b4741c",
+        "dc8c517682811a8fa0252bc6": "fc81e8c2b10a6dc097333a902ddfe38fb42423caecc6e860de8e05020ad2b78e",
+        "369e127a8a58e55905c96485": "8010f3b3907a62fb59ad4cf67c93ce0d9871b95a12714e015cbcd530d3a3f247",
+        "62034cac02bd37e4f548b7e4": "cf449d18aaa06f34e71f3d57fde22eed3d1f8cb8db7dc0754fc7696b736cbcfd"
+      }
+    },
+    {
+      "language": "mal",
+      "language_policy": "indic-plus-english",
+      "psm": 3,
+      "run_id": "fda103a421ad3d955dcb8ff1b7c9290fbb05d86efad8a465f8e01db19feb70f3",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 1446,
+        "reference_characters": 2025,
+        "word_edits": 266,
+        "reference_words": 290,
+        "cer": 0.7140740740740741,
+        "wer": 0.9172413793103448,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 1431,
+        "reference_characters": 2020,
+        "word_edits": 266,
+        "reference_words": 290,
+        "cer": 0.7084158415841584,
+        "wer": 0.9172413793103448,
+        "exact_accuracy": 0.3
+      },
+      "mean_latency_seconds": 0.19192174389999933,
+      "p95_latency_seconds": 0.38336246214999337,
+      "throughput_samples_per_second": 5.209391045920742,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "mal+eng",
+        "psm": 3,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "mal": "bd05cbf1b197e7810d2903419aedb06f9ef77bfedf50b358673c1d18d707cdb4",
+          "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 0,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 1,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "92e432990629795c50d416ea86e0beb58f80de6015f87b51ca89f5dc305d808e",
+      "image_sha256": {
+        "c1c242680076f3ac713d2396": "e269b27962bc8a8233fa2af9b9221123426408c48de9d94235c2f523a32df6a0",
+        "87b8c44906b678e72a586fbc": "d071c055982e1d683e70a7e62cfc113918fc0849830b1994ce60496246138ebd",
+        "ed19953509a13c8e486313a3": "cb6bdd112a2345b7f63567245ad65a8e448322a55243c2c9e9159ede2b877bfa",
+        "bc94ad0fc2186773c4d69514": "1cb92e50002bc24f7fa0cbd19dd868ed67d202d0615ee6c7fcd53c6ea723aa96",
+        "191e7e82ab8eaca403f4a0a0": "6b1c735d61c5eb8e195cd2f801a99b0a4638daf053e40e0e13a6085811a9ba2e",
+        "27ca9e6492063d4d1e33dd9b": "5e2af833cbd7f81070883e0f7668bd57dbc9c671d3b81bf1678dfd149a81b598",
+        "6307e8965d97bbb8833ab060": "cc29184ec4bb08db02031a64b472fdf0234017d430810f5bc1eba33840b4741c",
+        "dc8c517682811a8fa0252bc6": "fc81e8c2b10a6dc097333a902ddfe38fb42423caecc6e860de8e05020ad2b78e",
+        "369e127a8a58e55905c96485": "8010f3b3907a62fb59ad4cf67c93ce0d9871b95a12714e015cbcd530d3a3f247",
+        "62034cac02bd37e4f548b7e4": "cf449d18aaa06f34e71f3d57fde22eed3d1f8cb8db7dc0754fc7696b736cbcfd"
+      }
+    },
+    {
+      "language": "mal",
+      "language_policy": "indic-plus-english",
+      "psm": 6,
+      "run_id": "7787349234e34445c95204501c92b771e0125b15a887b3684f3c4864ea3f672a",
+      "samples": 10,
+      "failed": 0,
+      "raw": {
+        "samples": 10,
+        "character_edits": 1451,
+        "reference_characters": 2025,
+        "word_edits": 267,
+        "reference_words": 290,
+        "cer": 0.7165432098765432,
+        "wer": 0.9206896551724137,
+        "exact_accuracy": 0.0
+      },
+      "normalized": {
+        "samples": 10,
+        "character_edits": 1434,
+        "reference_characters": 2020,
+        "word_edits": 267,
+        "reference_words": 290,
+        "cer": 0.7099009900990099,
+        "wer": 0.9206896551724137,
+        "exact_accuracy": 0.3
+      },
+      "mean_latency_seconds": 0.19029972680000212,
+      "p95_latency_seconds": 0.373655780350006,
+      "throughput_samples_per_second": 5.253721251873058,
+      "engine": {
+        "nfc": true,
+        "collapse_whitespace": true,
+        "engine": "tesseract",
+        "version": "tesseract 5.3.4",
+        "language": "mal+eng",
+        "psm": 6,
+        "timeout": 120,
+        "preprocessing": "validated-first-frame-png-v1",
+        "traineddata_sha256": {
+          "mal": "bd05cbf1b197e7810d2903419aedb06f9ef77bfedf50b358673c1d18d707cdb4",
+          "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+        }
+      },
+      "diagnostics": {
+        "empty_predictions": 0,
+        "empty_references": 0,
+        "low_expected_script_reference_samples": 1,
+        "low_expected_script_prediction_samples": 0
+      },
+      "dataset_sha256": "92e432990629795c50d416ea86e0beb58f80de6015f87b51ca89f5dc305d808e",
+      "image_sha256": {
+        "c1c242680076f3ac713d2396": "e269b27962bc8a8233fa2af9b9221123426408c48de9d94235c2f523a32df6a0",
+        "87b8c44906b678e72a586fbc": "d071c055982e1d683e70a7e62cfc113918fc0849830b1994ce60496246138ebd",
+        "ed19953509a13c8e486313a3": "cb6bdd112a2345b7f63567245ad65a8e448322a55243c2c9e9159ede2b877bfa",
+        "bc94ad0fc2186773c4d69514": "1cb92e50002bc24f7fa0cbd19dd868ed67d202d0615ee6c7fcd53c6ea723aa96",
+        "191e7e82ab8eaca403f4a0a0": "6b1c735d61c5eb8e195cd2f801a99b0a4638daf053e40e0e13a6085811a9ba2e",
+        "27ca9e6492063d4d1e33dd9b": "5e2af833cbd7f81070883e0f7668bd57dbc9c671d3b81bf1678dfd149a81b598",
+        "6307e8965d97bbb8833ab060": "cc29184ec4bb08db02031a64b472fdf0234017d430810f5bc1eba33840b4741c",
+        "dc8c517682811a8fa0252bc6": "fc81e8c2b10a6dc097333a902ddfe38fb42423caecc6e860de8e05020ad2b78e",
+        "369e127a8a58e55905c96485": "8010f3b3907a62fb59ad4cf67c93ce0d9871b95a12714e015cbcd530d3a3f247",
+        "62034cac02bd37e4f548b7e4": "cf449d18aaa06f34e71f3d57fde22eed3d1f8cb8db7dc0754fc7696b736cbcfd"
+      }
+    }
+  ],
+  "post_run_label_audit": {
+    "flagged_samples": 1,
+    "flags": [
+      {
+        "sample_id": "27ca9e6492063d4d1e33dd9b",
+        "language": "mal",
+        "label_characters": 1290,
+        "label_words": 216,
+        "expected_script_fraction": 0.23068181818181818,
+        "review_flags": [
+          "possible-annotation-meta-text",
+          "low-expected-script-fraction"
+        ]
+      }
+    ],
+    "known_malformed_sample": "27ca9e6492063d4d1e33dd9b",
+    "finding": "Label includes image-analysis prose rather than only the visible transcription.",
+    "action": "Preserved unchanged; requires qualified human annotation review."
+  },
+  "limitations": [
+    "Ten convenience-sampled blocks per language, not representative.",
+    "Publisher labels have not been independently human-verified.",
+    "Original document grouping is unverified; blocks may be correlated.",
+    "Not a full-page or cropped-line benchmark; no 90% claim.",
+    "PSM/language-pack comparisons are exploratory; keep a separate test corpus.",
+    "Latency includes loading and preprocessing; no warmup protocol.",
+    "Known malformed reference invalidates aggregate Malayalam accuracy interpretation."
+  ]
+}

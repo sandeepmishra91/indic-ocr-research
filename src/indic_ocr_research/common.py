@@ -30,7 +30,19 @@ def provenance() -> dict:
     except (OSError, subprocess.SubprocessError):
         sha = None
     versions = {}
-    for name in ["indic-ocr-research", "Pillow", "numpy", "pypdf", "pypdfium2", "torch"]:
+    for name in [
+        "indic-ocr-research",
+        "Pillow",
+        "numpy",
+        "pypdf",
+        "pypdfium2",
+        "torch",
+        "typer",
+        "PyYAML",
+        "huggingface_hub",
+        "pyarrow",
+        "python-dotenv",
+    ]:
         try:
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:

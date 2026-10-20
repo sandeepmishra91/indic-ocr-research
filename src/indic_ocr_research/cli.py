@@ -96,6 +96,23 @@ def manifest_validate(path: File, out: Path | None = None, nfc: bool = True) -> 
         raise typer.Exit(1)
 
 
+@manifest_app.command("audit")
+@guarded
+def manifest_audit(
+    path: File,
+    out: Annotated[Path, typer.Option()],
+    review_manifest: Path | None = None,
+    fail_on_flags: bool = False,
+) -> None:
+    """Flag suspicious labels and optionally export a human review queue, without changing data."""
+    from .label_audit import audit_manifest
+
+    result = audit_manifest(path, out, review_manifest)
+    emit({k: result[k] for k in ("samples", "flagged_samples", "status", "notice")})
+    if fail_on_flags and result["flagged_samples"]:
+        raise typer.Exit(1)
+
+
 @manifest_app.command("split")
 @guarded
 def manifest_split(path: File, out: Annotated[Path, typer.Option()], seed: int = 42) -> None:

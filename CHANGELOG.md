@@ -6,6 +6,8 @@
   cached offline reuse, source attribution and publisher-label warnings.
 - Durable benchmark resume, failure-only retries, per-language scores, latency percentiles,
   stable engine identities and traineddata hashes; explicit block-level evaluation.
+- Non-destructive label audit and review queue after a genuine publisher-label defect
+  was found; quality warnings prevent presenting those scores as validated accuracy.
 - Opt-in hosted Hindi/Malayalam pilot comparing existing Tesseract PSM 3 and 6 without
   model downloads or publishing source images/labels.
 

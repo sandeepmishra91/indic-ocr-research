@@ -17,3 +17,8 @@ preprocessing, line detection, augmentation, ARM CPU optimization/quantization, 
 ROCm experiments and per-language evaluation. Add one tested extension at a time.
 The research target exceeds 90% word recognition accuracy on specified corpora, with
 confidence intervals and failure coverage. It is not a current achievement or guarantee.
+
+The small Hugging Face diagnostic pilot exposed malformed annotation prose in one
+Malayalam reference. Its scores cannot establish quality. The next priority is a
+qualified human audit and a separately held-out corpus, not training on this test set
+or downloading a larger model to optimize against defective labels.

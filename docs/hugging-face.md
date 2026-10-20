@@ -93,3 +93,12 @@ Upstream references: [file downloads](https://huggingface.co/docs/huggingface_hu
 The summary also includes per-sample numeric script/empty-output diagnostics without
 raw text. These flags can help locate mixed-script references or recognition failures;
 they do not establish label correctness and never exclude difficult samples.
+
+## Label-quality block found in the pilot
+
+The [executed pilot and post-run audit](experiments/indicdlp-pilot.md) found a malformed Malayalam
+reference containing image-analysis prose. The original scores are retained for
+traceability, but the affected aggregate must not be treated as validated OCR accuracy.
+Run `indicocr manifest audit --path data/indicdlp-pilot/manifest.jsonl --out outputs/audit.json
+--review-manifest outputs/review.jsonl --fail-on-flags` to produce a review queue.
+Flags never alter or exclude samples. No heuristic flags is also not proof of correctness.

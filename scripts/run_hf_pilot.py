@@ -44,7 +44,10 @@ def run(
                     Tesseract(requested, psm),
                     out / "runs" / f"{language}-{policy}-psm{psm}",
                     task="block",
-                    resume=resume,
+                    resume=resume
+                    and (
+                        out / "runs" / f"{language}-{policy}-psm{psm}" / "predictions.jsonl"
+                    ).is_file(),
                 )
                 runs.append(
                     {
@@ -61,6 +64,7 @@ def run(
                         "throughput_samples_per_second": result["throughput_samples_per_second"],
                         "engine": result["configuration"],
                         "diagnostics": result["diagnostics"],
+                        "quality_status": result["quality_status"],
                         "sample_diagnostics": result["sample_diagnostics"],
                         "worst_samples": result["worst_samples"],
                         "dataset_sha256": result["dataset"]["manifest_sha256"],
@@ -81,6 +85,7 @@ def run(
         "limitations": [
             "Ten convenience-sampled blocks per language, not representative.",
             "Publisher labels have not been independently human-verified.",
+            "Analysis/meta-text in references needs human correction before accuracy claims.",
             "Original document grouping is unverified; blocks may be correlated.",
             "Not a full-page or cropped-line benchmark; no 90% claim.",
             "PSM/language-pack comparisons are exploratory; keep a separate test corpus.",

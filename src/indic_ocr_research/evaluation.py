@@ -100,6 +100,7 @@ def benchmark(
             image_hashes[row["sample_id"]] = source_id(Path(row["image_path"]))
         except OSError:
             image_hashes[row["sample_id"]] = None
+    reference_audits = [audit_pair(r["transcription"], "", r["language"]) for r in chosen]
     descriptor = engine_identity(engine)
     if resume and not descriptor.get("version"):
         raise ValueError("Resume requires a stable engine version or checkpoint hash")
@@ -225,13 +226,22 @@ def benchmark(
         "latency_percentiles_seconds": {
             str(p): float(np.percentile(latencies, p)) if latencies else None for p in (50, 90, 95)
         },
+        "quality_status": "label-review-required"
+        if any(
+            "possible-annotation-meta-text" in s["reference_review_flags"] for s in reference_audits
+        )
+        else "not-independently-audited",
         "diagnostics": {
+            "annotation_meta_text_references": sum(
+                "possible-annotation-meta-text" in s["reference_review_flags"]
+                for s in reference_audits
+            ),
             "empty_predictions": sum(s["empty_prediction"] for s in sample_errors),
-            "empty_references": sum(s["empty_reference"] for s in sample_errors),
+            "empty_references": sum(s["empty_reference"] for s in reference_audits),
             "low_expected_script_reference_samples": sum(
                 s["reference_expected_script_fraction"] is not None
                 and s["reference_expected_script_fraction"] < 0.5
-                for s in sample_errors
+                for s in reference_audits
             ),
             "low_expected_script_prediction_samples": sum(
                 s["prediction_expected_script_fraction"] is not None
@@ -270,6 +280,12 @@ def benchmark(
         lines.insert(2, "SYNTHETIC MECHANICS TEST: not a real-world quality benchmark.")
     if result["dataset"]["unverified_ground_truth_samples"]:
         lines.insert(2, "PILOT: publisher labels have not been independently human-verified.")
+    if result["quality_status"] == "label-review-required":
+        lines.insert(
+            2,
+            "LABEL REVIEW REQUIRED: possible annotation analysis text in references. "
+            "Scores are diagnostic and cannot establish OCR accuracy.",
+        )
     for mode in ("raw", "normalized"):
         m = result[mode]
         lines.append(f"| {mode} | {m['cer']} | {m['wer']} | {m['exact_accuracy']} |")
